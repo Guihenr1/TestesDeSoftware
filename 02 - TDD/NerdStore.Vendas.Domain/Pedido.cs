@@ -6,7 +6,7 @@ using NerdStore.Core.DomainObjects;
 
 namespace NerdStore.Vendas.Domain
 {
-    public class Pedido
+    public class Pedido : Entity, IAggregateRoot
     {
         public static int MAX_UNIDADES_ITEM => 15;
         public static int MIN_UNIDADES_ITEM => 1;
@@ -14,7 +14,7 @@ namespace NerdStore.Vendas.Domain
         {
             _pedidoItems = new List<PedidoItem>();
         }
-        public Guid ClientId { get; private set; }
+        public Guid ClienteId { get; private set; }
         public decimal ValorTotal { get; private set; }
         public decimal Desconto { get; private set; }
         public PedidoStatus PedidoStatus { get; private set; }
@@ -69,7 +69,7 @@ namespace NerdStore.Vendas.Domain
             CalcularValorTotalDesconto();
         }
 
-        private bool PedidoItemExistente(PedidoItem item){
+        public bool PedidoItemExistente(PedidoItem item){
             return _pedidoItems.Any(p => p.ProdutoId == item.ProdutoId);
         }
 
@@ -135,7 +135,7 @@ namespace NerdStore.Vendas.Domain
             {
                 var pedido = new Pedido
                 {
-                    ClientId = clientId,
+                    ClienteId = clientId,
                 };
 
                 pedido.TornarRasculho();
